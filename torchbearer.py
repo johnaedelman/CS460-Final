@@ -56,7 +56,8 @@ def select_sources(spawn, relics, exit_node):
 
     TODO
     """
-    pass
+    relics.insert(0, spawn)
+    return relics  # The list of source nodes will be the list of relic nodes prepended with the spawn node.
 
 
 def run_dijkstra(graph, source):
@@ -75,7 +76,25 @@ def run_dijkstra(graph, source):
 
     TODO
     """
-    pass
+    values = {}
+    for node in graph:
+        values[node] = float('inf')  # Initialize the distance of each node to infinity
+    values[source] = 0
+
+    pq = []  # Priority queue to manage which node is selected next
+    heapq.heappush(pq, (0, source))
+
+    while pq:
+        curr_dist, u = heapq.heappop(pq)
+
+        if curr_dist > values[u]:  # Eliminate unnecessary checks
+            continue
+
+        for v, w in graph[u]:
+            if values[u] + w < values[v]:  # If the path between u and v is faster than the current known fastest path to v
+                values[v] = values[u] + w  # Update the current fastest known path to v; push v into the priority queue
+                heapq.heappush(pq, (values[v], v))
+    return values
 
 
 def precompute_distances(graph, spawn, relics, exit_node):
@@ -95,7 +114,11 @@ def precompute_distances(graph, spawn, relics, exit_node):
 
     TODO
     """
-    pass
+    dist_table = {}
+    sources = select_sources(spawn, relics, exit_node)
+    for u in sources:  # Run Dijkstra's from each source node and find the distance to every other node.
+        dist_table[u] = run_dijkstra(graph, u)  # Add these distances to dist_table, allowing dist_table[u][v] lookups from every source u.
+    return dist_table
 
 
 # =============================================================================
@@ -112,7 +135,9 @@ def dijkstra_invariant_check():
 
     TODO
     """
-    return "TODO"
+    return "For nodes already finalized (in S): \nFor every node v which has been finalized, the current estimate of the distance from the source x to v is the actual shortest possible path between x and v. For nodes not yet finalized (not in S): \nFor every node u which has not yet been finalized, the current estimate of the distance from the source x to u is the length of the shortest path between x and u which is entirely composed of nodes that have been finalized.\n" + \
+        "Initialization : why the invariant holds before iteration 1: \nAt the beginning, there are no nodes in S, the set of finalized nodes, so the invariant holds vacuously for the nodes in S. The only node which has an estimate for its distance is the source node s, for which dist[s] will be 0. For each other node v, dist[v] is equal to infinity, as there is no path that has been discovered between s and v, so the invariant holds.\nMaintenance : why finalizing the min-dist node is always correct: \nThe algorithm dequeues a node v from the priority queue, which is guaranteed to have the shortest distance among nodes not in S by the properties of a priority queue. Because the edge weights are nonnegative, no future path going through an unfinalized node could reduce dist[v]; any detour of this nature would only add cost and produce a longer path. Therefore, dist[v] must be optimal, and the invariant holds after moving v into S.\nTermination : what the invariant guarantees when the algorithm ends:\nThe invariant guarantees that for all nodes in S, the current estimate of the distance from the source to that node is the shortest possible path. Therefore, once all nodes are in S, all paths found will be the shortest ones possible.\n" + \
+        "If the shortest paths found by Dijkstra's are not correct and the routes are longer than the algorithm predicts, the Torchbearer may either waste fuel by taking an unnecessarily long route or fail to reach the exit at all by running out of fuel."
 
 
 # =============================================================================
@@ -129,7 +154,11 @@ def explain_search():
 
     TODO
     """
-    return "TODO"
+    return "The failure mode: Greedy will always select the immediate closest node at each step. However, in this problem, it may be necessary to make a less optimal immediate choice to get a better global solution.\n" + \
+        "Counter-example setup: Consider the following graph:\n| From \ To | B   | C   | D   | T   |\n|-----------|-----|-----|-----|-----|\n| S         | 2   | 1   | 2   | --  |\n| B         | --  | 1   | 1   | 1   |\n| C         | 100 | --  | 100 | 1   |\n| D         | 1   | 1   | --  | 100 |\n" + \
+        "What greedy picks: The greedy algorithm will go from S to C, as that is the closest node, incurring a cost of 1. However, it is then forced to go to D, with a cost of 100, and then to B, with a cost of 1, and finally to T. This yields a path S -> C -> D -> B -> T, with a cost of 103.\n" + \
+        "What optimal picks: The optimal algorithm goes to B first (cost 2), then to D (cost 1), then to C (cost 1), and finally to T (cost 1), creating a path S -> B -> D -> C -> T with a total cost of just 5.\n" + \
+        "Why greedy loses: At each step, it commits to the immediate cheapest edge without considering future possibilities, which can lead to severe trouble in the future."
 
 
 # =============================================================================
@@ -231,6 +260,7 @@ def _run_tests():
         'D': [('B', 1), ('C', 1)],
         'T': []
     }
+    print(precompute_distances(graph_1, 'S', ['B', 'C', 'D'], 'T', ))
     cost, order = solve(graph_1, 'S', ['B', 'C', 'D'], 'T')
     assert cost == 4, f"Test 1 FAILED: expected 4, got {cost}"
     print(f"  Test 1 passed  cost={cost}  order={order}")

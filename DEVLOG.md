@@ -10,7 +10,7 @@
 
 ---
 
-## Entry 1 – 5/14/2026: Initial Plan
+## Entry 1 – 5/14/26: Initial Plan
 
 > Required. Write this before writing any code. Describe your plan: what you will
 > implement first, what parts you expect to be difficult, and how you plan to test.
@@ -19,12 +19,11 @@ I will implement my functions in the order that is recommended in the assignment
 
 ---
 
-## Entry 2 – [Date]: [Short description]
-
+## Entry 2 – 5/14/26: Minor bug fix
 > Required. At least one entry must describe a bug, wrong assumption, or design change
 > you encountered. Describe what went wrong and how you resolved it.
 
-_Your entry here._
+While implementing precompute_distances(), I was having an odd issue with the source selection wherein it would only return None, which was bugging me for a few minutes. Unfortunately, it turned out to be one of those bugs that is embarassingly obvious once you figure it out, and I am including it here as a testament to the fact that one should remember to get up and take a breather every once in a while when programming: I was returning "relics.insert(0, spawn)", which, as you may realize, is a function that does not return anything.
 
 ---
 

@@ -35,8 +35,8 @@
 
 | Source Node Type | Why it is a source |
 |---|---|
-| _node type_ | _one-line reason_ |
-| _node type_ | _one-line reason_ |
+| Entrance node | The Torchbearer always begins at the entrance node. |
+| Relic chamber | Each relic must be visited in our final path, so we need to know the outward costs from each relic.|
 
 ### Part 2b: Distance Storage
 
@@ -44,20 +44,20 @@
 
 | Property | Your answer |
 |---|---|
-| Data structure name | |
-| What the keys represent | |
-| What the values represent | |
-| Lookup time complexity | |
-| Why O(1) lookup is possible | |
+| Data structure name | 2D dictionary |
+| What the keys represent | A pair of node names of the form (source, destination) |
+| What the values represent | The minimum fuel cost between the two nodes |
+| Lookup time complexity | O(1) |
+| Why O(1) lookup is possible | Dictionaries offer O(1) lookup time regardless of size through hashing. |
 
 ### Part 2c: Precomputation Complexity
 
 > State the total complexity and show the arithmetic. Two to three lines max.
 
-- **Number of Dijkstra runs:** _your answer_
-- **Cost per run:** _your answer_
-- **Total complexity:** _your answer_
-- **Justification (one line):** _your answer_
+- **Number of Dijkstra runs:** Since the set of relic chamber is of size k, we will have k + 1 Dijkstra runs (one extra for the entrance node S).
+- **Cost per run:** O(m log n), where m is the number of edges in the graph and n is the number of nodes.
+- **Total complexity:** O((k+1)*(m log n)).
+- **Justification (one line):** We must run Dijkstra's once for each of the k + 1 source nodes, and each run has complexity O(m log n).
 
 ---
 
@@ -72,29 +72,31 @@
 > Do not copy the invariant text from the spec.
 
 - **For nodes already finalized (in S):**
-  _Your answer here._
+  For every node v which has been finalized, the current estimate of the distance from the source x to v is the actual shortest possible path between x and v.
 
 - **For nodes not yet finalized (not in S):**
-  _Your answer here._
+  For every node u which has not yet been finalized, the current estimate of the distance from the source x to u is the length of the shortest path between x and u which is entirely composed of nodes that have been finalized.
 
 ### Part 3b: Why Each Phase Holds
 
 > One to two bullets per phase. Maintenance must mention nonnegative edge weights.
 
 - **Initialization : why the invariant holds before iteration 1:**
-  _Your answer here._
+  At the beginning, there are no nodes in S, the set of finalized nodes, so the invariant holds vacuously for the nodes in S. 
+  The only node which has an estimate for its distance is the source node s, for which dist[s] will be 0. For each other node v, dist[v] is equal to infinity, as there is no path that has been discovered between s and v, so the invariant holds.
 
 - **Maintenance : why finalizing the min-dist node is always correct:**
-  _Your answer here._
+  The algorithm dequeues a node v from the priority queue, which is guaranteed to have the shortest distance among nodes not in S by the properties of a priority queue. 
+  Because the edge weights are nonnegative, no future path going through an unfinalized node could reduce dist[v]; any detour of this nature would only add cost and produce a longer path. Therefore, dist[v] must be optimal, and the invariant holds after moving v into S.
 
 - **Termination : what the invariant guarantees when the algorithm ends:**
-  _Your answer here._
+  The invariant guarantees that for all nodes in S, the current estimate of the distance from the source to that node is the shortest possible path. Therefore, once all nodes are in S, all paths found will be the shortest ones possible.
 
 ### Part 3c: Why This Matters for the Route Planner
 
 > One sentence connecting correct distances to correct routing decisions.
 
-_Your answer here._
+If the shortest paths found by Dijkstra's are not correct and the routes are longer than the algorithm predicts, the Torchbearer may either waste fuel by taking an unnecessarily long route or fail to reach the exit at all by running out of fuel.
 
 ---
 
@@ -105,17 +107,23 @@ _Your answer here._
 > State the failure mode. Then give a concrete counter-example using specific node names
 > or costs (you may use the illustration example from the spec). Three to five bullets.
 
-- **The failure mode:** _Your answer here._
-- **Counter-example setup:** _Your answer here._
-- **What greedy picks:** _Your answer here._
-- **What optimal picks:** _Your answer here._
-- **Why greedy loses:** _Your answer here._
+- **The failure mode:** Greedy will always select the immediate closest node at each step. However, in this problem, it may be necessary to make a less optimal immediate choice to get a better global solution.
+- **Counter-example setup:** Consider the following graph: 
+| From \ To | B   | C   | D   | T   |
+|-----------|-----|-----|-----|-----|
+| S         | 2   | 1   | 2   | --  |
+| B         | --  | 1   | 1   | 1   |
+| C         | 100 | --  | 100 | 1   |
+| D         | 1   | 1   | --  | 100 |
+- **What greedy picks:** The greedy algorithm will go from S to C, as that is the closest node, incurring a cost of 1. However, it is then forced to go to D, with a cost of 100, and then to B, with a cost of 1, and finally to T. This yields a path S -> C -> D -> B -> T, with a cost of 103.
+- **What optimal picks:** The optimal algorithm goes to B first (cost 2), then to D (cost 1), then to C (cost 1), and finally to T (cost 1), creating a path S -> B -> D -> C -> T with a total cost of just 5.
+- **Why greedy loses:** At each step, it commits to the immediate cheapest edge without considering future possibilities, which can lead to severe trouble in the future.
 
 ### What the Algorithm Must Explore
 
 > One bullet. Must use the word "order."
 
-- _Your answer here._
+- The algorithm must explore every possible order in which the relics can be visited, as the best global solution cannot be determined without knowledge of all future possibilities.
 
 ---
 
