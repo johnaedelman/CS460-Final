@@ -110,7 +110,6 @@ If the shortest paths found by Dijkstra's are not correct and the routes are lon
 - **The failure mode:** Greedy will always select the immediate closest node at each step. However, in this problem, it may be necessary to make a less optimal immediate choice to get a better global solution.
 - **Counter-example setup:** Consider the following graph: \
 | From \ To | B   | C   | D   | T   | \
-|-----------|-----|-----|-----|-----| \
 | S         | 2   | 1   | 2   | --  | \
 | B         | --  | 1   | 1   | 1   | \
 | C         | 100 | --  | 100 | 1   | \
@@ -138,7 +137,7 @@ If the shortest paths found by Dijkstra's are not correct and the routes are lon
 |---|---|---|---|
 | Current location | current_loc | node | The node the Torchbearer is currently at. |
 | Relics already collected | relics_visited_order | list | An ordered list of the relics which have been visited to reach the current node. |
-| Fuel cost so far | cost_so_far | int | The total amount of torch fuel which has been spent to reach the current node. |
+| Fuel cost so far | cost_so_far | float | The total amount of torch fuel which has been spent to reach the current node. |
 
 ### Part 5b: Data Structure for Visited Relics
 
@@ -147,9 +146,9 @@ If the shortest paths found by Dijkstra's are not correct and the routes are lon
 | Property | Your answer |
 |---|---|
 | Data structure chosen | set |
-| Operation: check if relic already collected | Time complexity: | O(1) |
-| Operation: mark a relic as collected | Time complexity: | O(1) |
-| Operation: unmark a relic (backtrack) | Time complexity: | O(1) |
+| Operation: check if relic already collected | Time complexity: O(1) |
+| Operation: mark a relic as collected | Time complexity: O(1) |
+| Operation: unmark a relic (backtrack) | Time complexity: O(1) |
 | Why this structure fits | We need a structure with fast lookup, insertion, and deletion. Thanks to hashing, set operations can be treated as O(1) time for our purposes (let's leave hash collisions for the Python devs to worry about). |
 
 ### Part 5c: Worst-Case Search Space
@@ -193,5 +192,5 @@ If the shortest paths found by Dijkstra's are not correct and the routes are lon
 > Bullet list. If none beyond lecture notes, write that.
 
 - My own lecture notes, primarily written from the 12:30 PM section of CS 460
-- Canvas resources, particularly previous CS 460 assignments, lecture slides, and videos
+- Canvas resources, particularly previous CS 460 assignments, lecture slides, and videos (in particular, my Dijkstra implementation was closely based on the one in the Graphs Practice Quiz)
 - Python documentation for the heapq module (https://docs.python.org/3/library/heapq.html)
