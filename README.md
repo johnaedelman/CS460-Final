@@ -40,7 +40,7 @@
 
 ### Part 2c: Precomputation Complexity
 
-- **Number of Dijkstra runs:** Since the set of relic chamber is of size k, we will have k + 1 Dijkstra runs (one extra for the entrance node S).
+- **Number of Dijkstra runs:** Since the set of relic chambers is of size k, we will have k + 1 Dijkstra runs (one extra for the entrance node S).
 - **Cost per run:** O(m log n), where m is the number of edges in the graph and n is the number of nodes.
 - **Total complexity:** O((k+1)*(m log n)).
 - **Justification (one line):** We must run Dijkstra's once for each of the k + 1 source nodes, and each run has complexity O(m log n).
@@ -81,12 +81,14 @@ If the shortest paths found by Dijkstra's are not correct and the routes are lon
 ### Why Greedy Fails
 
 - **The failure mode:** Greedy will always select the immediate closest node at each step. However, in this problem, it may be necessary to make a less optimal immediate choice to get a better global solution.
-- **Counter-example setup:** Consider the following graph: \
-| From \ To | B   | C   | D   | T   | \
-| S         | 2   | 1   | 2   | --  | \
-| B         | --  | 1   | 1   | 1   | \
-| C         | 100 | --  | 100 | 1   | \
+- **Counter-example setup:** Consider the following graph:
+###
+| From \ To | B   | C   | D   | T   | 
+| S         | 2   | 1   | 2   | --  |
+| B         | --  | 1   | 1   | 1   |
+| C         | 100 | --  | 100 | 1   | 
 | D         | 1   | 1   | --  | 100 |
+###
 - **What greedy picks:** The greedy algorithm will go from S to C, as that is the closest node, incurring a cost of 1. However, it is then forced to go to D, with a cost of 100, and then to B, with a cost of 1, and finally to T. This yields a path S -> C -> D -> B -> T, with a cost of 103.
 - **What optimal picks:** The optimal algorithm goes to B first (cost 2), then to D (cost 1), then to C (cost 1), and finally to T (cost 1), creating a path S -> B -> D -> C -> T with a total cost of just 5.
 - **Why greedy loses:** At each step, it commits to the immediate cheapest edge without considering future possibilities, which can lead to severe trouble in the future.
