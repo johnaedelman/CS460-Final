@@ -10,7 +10,7 @@
 
 ---
 
-## Entry 1 – 5/14/26: Initial Plan
+## Entry 1 – [5/14/26]: Initial Plan
 
 > Required. Write this before writing any code. Describe your plan: what you will
 > implement first, what parts you expect to be difficult, and how you plan to test.
@@ -19,7 +19,7 @@ I will implement my functions in the order that is recommended in the assignment
 
 ---
 
-## Entry 2 – 5/14/26: Minor bug fix
+## Entry 2 – [5/14/26]: Minor bug fix
 > Required. At least one entry must describe a bug, wrong assumption, or design change
 > you encountered. Describe what went wrong and how you resolved it.
 
@@ -27,13 +27,13 @@ While implementing precompute_distances(), I was having an odd issue with the so
 
 ---
 
-## Entry 3 – [Date]: [Short description]
+## Entry 3 – [5/14/26]: Finished parts 5 and 6
 
-_Your entry here._
+Implemented the find_optimal_route function, its _explore() helper, and subsequently the final solve() function after writing the relevant readme entries to get my thoughts in order. I also made a few bug fixes, like changing the way select_sources works one more time. Kind of funny that I've had to make multiple corrections to it, given how simple it is, but I guess I was a little bit rusty on my Python list behaviors. I'm very close to submission at this point, I'm just going to do another once-over for comments in the code and issues in the readme and then finish the last bits of the devlog.
 
 ---
 
-## Entry 4 – [Date]: Post-Implementation Reflection
+## Entry 4 – [5/14/26]: Post-Implementation Reflection
 
 > Required. Written after your implementation is complete. Describe what you would
 > change or improve given more time.
@@ -42,18 +42,18 @@ _Your entry here._
 
 ---
 
-## Final Entry – [Date]: Time Estimate
+## Final Entry – [5/14/26]: Time Estimate
 
 > Required. Estimate minutes spent per part. Honesty is expected; accuracy is not graded.
 
 | Part | Estimated Hours |
 |---|---|
-| Part 1: Problem Analysis | |
-| Part 2: Precomputation Design | |
-| Part 3: Algorithm Correctness | |
-| Part 4: Search Design | |
-| Part 5: State and Search Space | |
-| Part 6: Pruning | |
-| Part 7: Implementation | |
+| Part 1: Problem Analysis | 30 minutes |
+| Part 2: Precomputation Design | 60 minutes |
+| Part 3: Algorithm Correctness | 45 minutes |
+| Part 4: Search Design | 60 minutes |
+| Part 5: State and Search Space | 30 minutes |
+| Part 6: Pruning | 55 minutes |
+| Part 7: Implementation | 120 minutes |
 | README and DEVLOG writing | |
 | **Total** | |

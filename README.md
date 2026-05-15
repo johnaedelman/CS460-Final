@@ -108,7 +108,7 @@ If the shortest paths found by Dijkstra's are not correct and the routes are lon
 > or costs (you may use the illustration example from the spec). Three to five bullets.
 
 - **The failure mode:** Greedy will always select the immediate closest node at each step. However, in this problem, it may be necessary to make a less optimal immediate choice to get a better global solution.
-- **Counter-example setup:** Consider the following graph: 
+- **Counter-example setup:** Consider the following graph: \
 | From \ To | B   | C   | D   | T   | \
 |-----------|-----|-----|-----|-----| \
 | S         | 2   | 1   | 2   | --  | \
@@ -136,9 +136,9 @@ If the shortest paths found by Dijkstra's are not correct and the routes are lon
 
 | Component | Variable name in code | Data type | Description |
 |---|---|---|---|
-| Current location | | | |
-| Relics already collected | | | |
-| Fuel cost so far | | | |
+| Current location | current_loc | node | The node the Torchbearer is currently at. |
+| Relics already collected | relics_visited_order | list | An ordered list of the relics which have been visited to reach the current node. |
+| Fuel cost so far | cost_so_far | int | The total amount of torch fuel which has been spent to reach the current node. |
 
 ### Part 5b: Data Structure for Visited Relics
 
@@ -146,18 +146,18 @@ If the shortest paths found by Dijkstra's are not correct and the routes are lon
 
 | Property | Your answer |
 |---|---|
-| Data structure chosen | |
-| Operation: check if relic already collected | Time complexity: |
-| Operation: mark a relic as collected | Time complexity: |
-| Operation: unmark a relic (backtrack) | Time complexity: |
-| Why this structure fits | |
+| Data structure chosen | set |
+| Operation: check if relic already collected | Time complexity: | O(1) |
+| Operation: mark a relic as collected | Time complexity: | O(1) |
+| Operation: unmark a relic (backtrack) | Time complexity: | O(1) |
+| Why this structure fits | We need a structure with fast lookup, insertion, and deletion. Thanks to hashing, set operations can be treated as O(1) time for our purposes (let's leave hash collisions for the Python devs to worry about). |
 
 ### Part 5c: Worst-Case Search Space
 
 > Two bullets.
 
-- **Worst-case number of orders considered:** _Your answer (in terms of k)._
-- **Why:** _One-line justification._
+- **Worst-case number of orders considered:** k!
+- **Why:** There are k relics, and therefore k! possible orderings of those relics.
 
 ---
 
@@ -167,23 +167,24 @@ If the shortest paths found by Dijkstra's are not correct and the routes are lon
 
 > Three bullets.
 
-- **What is tracked:** _Your answer here._
-- **When it is used:** _Your answer here._
-- **What it allows the algorithm to skip:** _Your answer here._
+- **What is tracked:** A variable best, which is the total fuel cost of the cheapest route which has been discovered in the search so far.
+- **When it is used:** In every recursive call to _explore(), before making any more recursive calls, the current accumulated cost plus a lower bound for the remaining cost of the route is compared against best.
+- **What it allows the algorithm to skip:** Any branch of the recursion where the pruning algorithm determines that it's impossible to do better than best will terminate early.
 
 ### Part 6b: Lower Bound Estimation
 
 > Three bullets.
 
-- **What information is available at the current state:** _Your answer here._
-- **What the lower bound accounts for:** _Your answer here._
-- **Why it never overestimates:** _Your answer here._
+- **What information is available at the current state:** The current node, the precomputed distances from each node to every other node, the set of unvisited relics, the order which was taken to reach the current node, the fuel cost of the current route, and the cost of the current best route.
+- **What the lower bound accounts for:** It is the cheapest possible cost to finish from the current node. If the cost of the current route plus the minimum amount of fuel it will take to finish it is greater than the cost of the current best route, then the current route is clearly worse.
+- **Why it never overestimates:** It uses the precomputed shortest-path distances, which are absolute floors for the cost of traversal. The actual cost of going through the dungeon will, by definition, either be the same or more than the shortest path.
 
 ### Part 6c: Pruning Correctness
 
 > One to two bullets. Explain why pruning is safe.
 
-- _Your answer here._
+- Because the lower bound is absolute and will never overestimate thanks to Dijkstra's algorithm, we know that by adding the lower bound to the cost of the route up to current, we get the minimum possible fuel which could conceivably be used to finish the route.
+- If this minimum is greater than the fuel cost of the best route, we know that is is impossible to generate a solution better than the current best on this branch of recursion, and thus we can safely prune it.
 
 ---
 
@@ -191,4 +192,6 @@ If the shortest paths found by Dijkstra's are not correct and the routes are lon
 
 > Bullet list. If none beyond lecture notes, write that.
 
-- _Your references here._
+- My own lecture notes, primarily written from the 12:30 PM section of CS 460
+- Canvas resources, particularly previous CS 460 assignments and lecture slides
+- Python documentation for the heapq module (https://docs.python.org/3/library/heapq.html)
