@@ -32,6 +32,7 @@ def explain_problem():
         Your Part 1 README answers, written as a string.
         Must match what you wrote in README Part 1.
 
+    TODO
     """
     return "Why a single shortest-path run from S is not enough: We are not simply finding the shortest path from S to T. Our path must route through every relic chamber, and in particular it must be the cheapest route which does so.\nWhat decision remains after all inter-location costs are known: The shortest choice of route which visits every relic room as well as the exit.\nWhy this requires a search over orders (one sentence): Even routes that go through the same chambers may have different costs if the order is different, and therefore committing to a next step without searching over orders leaves the possibility of a better future route being opened by a path that a simple greedy algorithm would not have found yet."
 
@@ -53,6 +54,7 @@ def select_sources(spawn, relics, exit_node):
     list[node]
         No duplicates. Order does not matter.
 
+    TODO
     """
     # I decided to change this so that it doesn't mess with the input list relics itself.
     return [spawn] + relics  # The list of source nodes will be the list of relic nodes prepended with the spawn node.
@@ -72,6 +74,7 @@ def run_dijkstra(graph, source):
         Minimum cost from source to every node in graph.
         Unreachable nodes map to float('inf').
 
+    TODO
     """
     values = {}
     for node in graph:
@@ -109,6 +112,7 @@ def precompute_distances(graph, spawn, relics, exit_node):
         Nested structure supporting dist_table[u][v] lookups
         for every source u your design requires.
 
+    TODO
     """
     dist_table = {}
     sources = select_sources(spawn, relics, exit_node)
@@ -129,6 +133,7 @@ def dijkstra_invariant_check():
         Your Part 3 README answers, written as a string.
         Must match what you wrote in README Part 3.
 
+    TODO
     """
     return "For nodes already finalized (in S): \nFor every node v which has been finalized, the current estimate of the distance from the source x to v is the actual shortest possible path between x and v. For nodes not yet finalized (not in S): \nFor every node u which has not yet been finalized, the current estimate of the distance from the source x to u is the length of the shortest path between x and u which is entirely composed of nodes that have been finalized.\n" + \
         "Initialization : why the invariant holds before iteration 1: \nAt the beginning, there are no nodes in S, the set of finalized nodes, so the invariant holds vacuously for the nodes in S. The only node which has an estimate for its distance is the source node s, for which dist[s] will be 0. For each other node v, dist[v] is equal to infinity, as there is no path that has been discovered between s and v, so the invariant holds.\nMaintenance : why finalizing the min-dist node is always correct: \nThe algorithm dequeues a node v from the priority queue, which is guaranteed to have the shortest distance among nodes not in S by the properties of a priority queue. Because the edge weights are nonnegative, no future path going through an unfinalized node could reduce dist[v]; any detour of this nature would only add cost and produce a longer path. Therefore, dist[v] must be optimal, and the invariant holds after moving v into S.\nTermination : what the invariant guarantees when the algorithm ends:\nThe invariant guarantees that for all nodes in S, the current estimate of the distance from the source to that node is the shortest possible path. Therefore, once all nodes are in S, all paths found will be the shortest ones possible.\n" + \
@@ -147,6 +152,7 @@ def explain_search():
         Your Part 4 README answers, written as a string.
         Must match what you wrote in README Part 4.
 
+    TODO
     """
     return "The failure mode: Greedy will always select the immediate closest node at each step. However, in this problem, it may be necessary to make a less optimal immediate choice to get a better global solution.\n" + \
         "Counter-example setup: Consider the following graph:\n| From \\ To | B   | C   | D   | T   |\n|-----------|-----|-----|-----|-----|\n| S         | 2   | 1   | 2   | --  |\n| B         | --  | 1   | 1   | 1   |\n| C         | 100 | --  | 100 | 1   |\n| D         | 1   | 1   | --  | 100 |\n" + \
@@ -263,7 +269,7 @@ def solve(graph, spawn, relics, exit_node):
 
     TODO
     """
-    # Combines everything else, finding the optimal route based on the precomputed distances
+    # Combines everything else I've written, finding the optimal route based on the precomputed distances
     return find_optimal_route(precompute_distances(graph, spawn, relics, exit_node), spawn, relics, exit_node)
 
 

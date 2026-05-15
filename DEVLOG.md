@@ -38,7 +38,7 @@ Implemented the find_optimal_route function, its _explore() helper, and subseque
 > Required. Written after your implementation is complete. Describe what you would
 > change or improve given more time.
 
-_Your entry here._
+I'm pretty happy with the implementation, but I would definitely write some more test cases if I had extra time. I'd like to make sure that I haven't overlooked anything or introduced any weird bugs inadvertently, and I find that a good way to do that is by throwing a bunch of test cases (particularly edge cases) at the problem. As it is, it passes all the given tests plus a couple that I made up but didn't include in my final submission, and I don't see any reason why it would fail further tests, but I suppose the graders will decide my fate in that regard.
 
 ---
 
@@ -54,6 +54,6 @@ _Your entry here._
 | Part 4: Search Design | 60 minutes |
 | Part 5: State and Search Space | 30 minutes |
 | Part 6: Pruning | 55 minutes |
-| Part 7: Implementation | 120 minutes |
-| README and DEVLOG writing | |
-| **Total** | |
+| Part 7: Implementation | 180 minutes |
+| README and DEVLOG writing | 50 minutes |
+| **Total** | 510 minutes |

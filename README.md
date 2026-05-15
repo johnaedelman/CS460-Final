@@ -45,7 +45,7 @@
 | Property | Your answer |
 |---|---|
 | Data structure name | 2D dictionary |
-| What the keys represent | A pair of node names of the form (source, destination) |
+| What the keys represent | With a source and destination key, one can look up the distance between the source and the destination. |
 | What the values represent | The minimum fuel cost between the two nodes |
 | Lookup time complexity | O(1) |
 | Why O(1) lookup is possible | Dictionaries offer O(1) lookup time regardless of size through hashing. |
@@ -193,5 +193,5 @@ If the shortest paths found by Dijkstra's are not correct and the routes are lon
 > Bullet list. If none beyond lecture notes, write that.
 
 - My own lecture notes, primarily written from the 12:30 PM section of CS 460
-- Canvas resources, particularly previous CS 460 assignments and lecture slides
+- Canvas resources, particularly previous CS 460 assignments, lecture slides, and videos
 - Python documentation for the heapq module (https://docs.python.org/3/library/heapq.html)
